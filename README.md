@@ -1,5 +1,5 @@
 
-Reverse Proxy and Firewall with ESP8266 for Python Server
+<h2>Reverse Proxy and Firewall with ESP8266 for Python Server</h2>
 Overview
 This project demonstrates how to create a reverse proxy using an ESP8266 microcontroller for a Python server. The ESP8266 acts as an intermediary, forwarding requests from clients to the server and providing an additional layer of security by acting as a firewall.
 Table of Contents
