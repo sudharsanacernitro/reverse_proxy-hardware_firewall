@@ -210,6 +210,19 @@ body {
 .fa-snapchat:hover {
     color: #fffb01 !important;
 }
+
+
+#connect,#edit{
+    width:100px;
+    height:50px;
+    background-color: skyblue;
+    color:white;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
 @media screen and (max-width: 600px) {
   .sidenav{
     display:none;
@@ -245,6 +258,12 @@ body {
         <!-- Navbar -->
         <ul>
             <li>
+                <div id="edit"><a href="/edit">Edit</a></div>
+             </li>
+            <li>
+               <div id="connect"><a href="/connect">connect</a></div>
+            </li>
+            <li>
                 <a href="#message">
                     <span class="icon-count">29</span>
                     <i class="fa fa-envelope fa-2x"></i>
@@ -257,7 +276,7 @@ body {
                 </a>
             </li>
             <li>
-                <a href="#sign-out">
+                <a href="/sign-out">
                     <i class="fa fa-sign-out-alt fa-2x"></i>
                 </a>
             </li>

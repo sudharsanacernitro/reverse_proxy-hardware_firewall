@@ -6,7 +6,7 @@ import db
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
-
+data={}
 
 app = Flask(__name__, static_url_path='/static')
 static_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
@@ -40,12 +40,31 @@ def login():
 def test():
     return 'Hello, World!'
 
-@app.route('/profile')
+@app.route('/profile',methods=['GET'])
 def profile():
+    global data
     data=db.profile()
     print(data)
     return render_template('profile.html',data=data)
 
+@app.route('/edit',methods=['GET'])
+def edit():
+    print(data)
+    return render_template('edit.html',data=data)
 
+@app.route('/change',methods=['POST'])
+def change():
+    data=request.form.to_dict()
+    print(data['name'],data['password'],data['sys_name'])
+    return redirect(url_for('profile'))
+
+
+@app.route('/sign-out',methods=['GET'])
+def sign_out():
+    return redirect(url_for('captiveportal'))
+
+@app.route('/connect',methods=['GET'])
+def connect():
+    return render_template('success.html')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)  
