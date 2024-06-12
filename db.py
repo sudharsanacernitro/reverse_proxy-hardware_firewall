@@ -29,16 +29,27 @@ def check(mac):
         cursor.close()
         connection.close()
 
-def update(mac, new_mac):
+def update(username, new_name, new_passcode, new_system):
     connection = get_db_connection()
     cursor = connection.cursor()
+    print('update selected')
     try:
-        query = "UPDATE registered_mac SET mac_id=%s WHERE mac_id=%s"
-        cursor.execute(query, (new_mac, mac))
+        query = "UPDATE registered_mac SET user_name=%s, pass_code=%s WHERE user_name=%s"
+        cursor.execute(query, (new_name, new_passcode, username))
         connection.commit()
+
+        query = "UPDATE details SET user_name=%s, system=%s WHERE user_name=%s"
+        cursor.execute(query, (new_name, new_system, username))
+
+        connection.commit()
+        
+    except Exception as e:
+        connection.rollback()
+        print("Error occurred:", e)
     finally:
         cursor.close()
         connection.close()
+
 
 def login(username, passcode):
     connection = get_db_connection()
@@ -51,50 +62,43 @@ def login(username, passcode):
     finally:
         cursor.close()
         connection.close()
-
-def profile():
+        
+def profile(name):
     connection = get_db_connection()
     cursor = connection.cursor()
     try:
         query = '''
-        SELECT 
-            stud_det.name, 
-            stud_det.year, 
-            stud_det.course, 
-            stud_det.section, 
-            stud_det.mac_id,
-            registered_mac.user_name, 
-            registered_mac.pass_code
-        FROM 
-            stud_det
-        INNER JOIN 
-            registered_mac ON stud_det.mac_id = registered_mac.mac_id
+        SELECT * FROM registered_mac 
+        INNER JOIN details ON registered_mac.user_name = details.user_name 
+        WHERE registered_mac.user_name = %s;
         '''
-        cursor.execute(query)
+        print(f"Executing query: {query} with name: {name}")
+        cursor.execute(query, (name,))
         result = cursor.fetchone()
+        print(f"Query result: {result}")
         if result:
             dataset = {
                 'name': result[0],
-                'year': result[1],
-                'course': result[2],
-                'section': result[3],
-                'mac_id': result[4],
-                'roll-no': result[5],
-                'pass_code': result[6]
+                'year': result[5],
+                'course': result[4],
+                'section': 'D',
+                'mac_id': result[2],
+                'roll-no': result[0],
+                'pass_code': result[1],
+                'sys_name':result[6],
+                'os':result[7]
             }
-
-            query = "SELECT sys_name, os_name FROM system WHERE mac_id=%s"
-            cursor.execute(query, (dataset['mac_id'],))
-            sys_info = cursor.fetchone()
-            if sys_info:
-                dataset['sys_name'] = sys_info[0]
-                dataset['os'] = sys_info[1]
-
             return dataset
+        else:
+            print("No matching records found.")
+            return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
         return None
     finally:
         cursor.close()
         connection.close()
+
 
 if __name__ == "__main__":
     data = login('22csr207', 'kongu@2024')

@@ -223,6 +223,9 @@ body {
     display: flex;
     justify-content: center;
 }
+#connect_phone{
+    display: none;
+}
 @media screen and (max-width: 600px) {
   .sidenav{
     display:none;
@@ -245,6 +248,13 @@ body {
     padding: 0 10px;
     width: 78%;
 }
+    #edit,#connect{
+        display: none;
+    }
+
+    #connect_phone{
+        display: block;
+    }
 }
 
 </style>
@@ -312,6 +322,7 @@ body {
 
     <!-- Main -->
     <div class="main">
+        <div id="connect_phone"><a href="/connect">connect</a></div>
         <h2>IDENTITY</h2>
         <div class="card">
             <div class="card-body">
